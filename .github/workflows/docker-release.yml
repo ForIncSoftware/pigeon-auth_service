@@ -4,10 +4,11 @@ on:
     tags:
       - 'v*'  # Тригериться при пуші тегів, як-от v1.0.0
 
+permissions:
+  contents: write
+
 jobs:
   docker-release:
-    permissions:
-      contents: write
     runs-on: ubuntu-latest
 
     steps:
