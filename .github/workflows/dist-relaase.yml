@@ -1,0 +1,42 @@
+name: docker-release.yml
+on:
+  push:
+    tags:
+      - 'v*'  # Тригериться при пуші тегів, як-от v1.0.0
+
+permissions:
+  contents: write
+
+jobs:
+
+  dist-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build    # припускаємо, що збірка виводить файли у dist/
+
+      - name: Archive dist folder
+        run: |
+          zip -r dist-${{ github.ref_name }}.zip dist/
+
+      - name: Create GitHub Release & upload dist
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: |
+            dist-${{ github.ref_name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
