@@ -1,4 +1,4 @@
-name: docker-release.yml
+name: dist-release.yml
 on:
   push:
     tags:
