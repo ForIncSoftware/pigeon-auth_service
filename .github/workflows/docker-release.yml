@@ -31,6 +31,6 @@ jobs:
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
-          files: nest-app-docker-${{ github.ref_name }}.tar
+          files: nest-app-${{ github.ref_name }}.tar
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
