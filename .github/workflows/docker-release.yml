@@ -1,0 +1,33 @@
+name: docker-release.yml
+on:
+  push:
+    tags:
+      - 'v*'  # Тригериться при пуші тегів, як-от v1.0.0
+
+jobs:
+  docker-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Клонувати репозиторій
+        uses: actions/checkout@v4
+
+      - name: Налаштувати Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Зібрати Docker-образ
+        run: |
+          docker build -t nest-app:${{ github.ref_name }} .
+
+      - name: Зберегти Docker-образ у файл
+        run: |
+          docker save nest-app:${{ github.ref_name }} -o nest-app-${{ github.ref_name }}.tar
+
+      - name: Завантажити файл у GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: nest-app-${{ github.ref_name }}.tar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
