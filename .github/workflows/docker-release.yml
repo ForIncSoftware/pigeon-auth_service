@@ -34,3 +34,12 @@ jobs:
           files: nest-app-${{ github.ref_name }}.tar
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+
+      - name: Завантажити файл latest у GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release latest
+          tag_name: latest
+          files: nest-app-latest.tar
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
