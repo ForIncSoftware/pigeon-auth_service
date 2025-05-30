@@ -20,14 +20,12 @@ jobs:
 
       - name: Зібрати Docker-образ
         run: |
-          docker build -t pigeon-auth_service:${{ github.ref_name }} .  && \
-          docker tag pigeon-auth_service:${{ github.ref_name }} pigeon-auth_service:latest
+          docker build -t pigeon-auth_service:${{ github.ref_name }} . 
 
 
       - name: Зберегти Docker-образ у файл
         run: |
-            docker save pigeon-auth_service:${{ github.ref_name }} -o pigeon-auth_service-${{ github.ref_name }}.tar && \
-            docker save pigeon-auth_service:latest -o pigeon-auth_service-latest.tar
+            docker save pigeon-auth_service:${{ github.ref_name }} -o pigeon-auth_service-${{ github.ref_name }}.tar 
 
       - name: Завантажити файл у GitHub Release
         uses: softprops/action-gh-release@v2
@@ -35,14 +33,5 @@ jobs:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
           files: pigeon-auth_service-${{ github.ref_name }}.tar
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-
-      - name: Завантажити файл latest у GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: Release latest
-          tag_name: latest
-          files: pigeon-auth_service-latest.tar
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
