@@ -20,21 +20,21 @@ jobs:
 
       - name: Зібрати Docker-образ
         run: |
-          docker build -t nest-app:${{ github.ref_name }} .  && \
-          docker tag nest-app:${{ github.ref_name }} nest-app:latest
+          docker build -t pigeon-auth_service:${{ github.ref_name }} .  && \
+          docker tag pigeon-auth_service:${{ github.ref_name }} pigeon-auth_service:latest
 
 
       - name: Зберегти Docker-образ у файл
         run: |
-            docker save nest-app:${{ github.ref_name }} -o nest-app-${{ github.ref_name }}.tar && \
-            docker save nest-app:latest -o nest-app-latest.tar
+            docker save pigeon-auth_service:${{ github.ref_name }} -o pigeon-auth_service-${{ github.ref_name }}.tar && \
+            docker save pigeon-auth_service:latest -o pigeon-auth_service-latest.tar
 
       - name: Завантажити файл у GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
-          files: nest-app-${{ github.ref_name }}.tar
+          files: pigeon-auth_service-${{ github.ref_name }}.tar
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 
@@ -43,6 +43,6 @@ jobs:
         with:
           name: Release latest
           tag_name: latest
-          files: nest-app-latest.tar
+          files: pigeon-auth_service-latest.tar
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
