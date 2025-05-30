@@ -21,13 +21,12 @@ jobs:
       - name: Зібрати Docker-образ
         run: |
           docker build -t nest-app:${{ github.ref_name }} .
-          docker build -t nest-app:lates .
           
 
       - name: Зберегти Docker-образ у файл
         run: |
           docker save nest-app:${{ github.ref_name }} -o nest-app-${{ github.ref_name }}.tar
-          docker save nest-app:latest -o nest-app-latest.tar
+          docker save nest-app:${{ github.ref_name }} -o nest-app-latest.tar
 
 
       - name: Завантажити файл у GitHub Release
